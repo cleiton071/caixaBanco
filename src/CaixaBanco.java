@@ -6,62 +6,63 @@ public class CaixaBanco {
     private ArrayList<Usuario> usuarios = new ArrayList<>();
 
     public void setUsuarios(){
-        usuarios.add(new Usuario(50.00,"111.222.333-21","2123","cleiton"));
+        usuarios.add(new Usuario(00.00, "324.360.618-74", "123", "Narciso"));
     }
 
     public Integer verificaLogin(String cpf) {
         if (logado) {
-
             return -2;
         }
 
         Integer i = 0, userExist = -1;
-
-        for (i=0; i<usuarios.size(); i++) {
-            if (cpf.equals(usuarios.get(i).getCpf())) {
-                userExist = i;
-                break;
+        for (i=0; i<usuarios.size(); i++){
+            if (cpf.equals(usuarios.get(i).getCpf())){
+               userExist = i;
+               break;
             }
         }
         return userExist;
-    }
 
+    }
     public void logar(String cpf, String senha) {
         Integer userExist = verificaLogin(cpf);
-        if (userExist == -1){
-            System.out.println("o usuario digitado não existe.");
-        }
-        else if (userExist == -2) {
-            System.out.println("já existe um usuario logado no sistema.\npor favor faça logout primeiro.");
-        }
+         if (userExist == -1){
+             System.out.println("Usuario digitado nao exite");
+         }
+         else if (userExist == -2) {
+             System.out.println("ja existe usuario logado no sistema. \n por favor");
+         }
+         else {
+             if (senha.equals(usuarios.get(userExist).getSenha())){
+               usuarioLogado = userExist;
+               logado = true;
+               System.out.printf("usuario logado: %s\n", usuarios.get(usuarioLogado).getNome());
+             }
+             else System.out.println("senha incorreta");
+         }
+    }
+
+    public void depositar(Double valor){
+        usuarios.get(usuarioLogado).setSaldo(valor + usuarios.get(usuarioLogado).getSaldo());
+        System.out.printf("\nSaldo Atual: %.2f ", usuarios.get(usuarioLogado).getSaldo());
+    }
+
+    public void sacar(Double valor){
+        if (usuarios.get(usuarioLogado).getSaldo()-valor<-600.00)
+        {
+            System.out.println("Saque nao realizado, voce ultrapassou seu limite de credito");
+
+    }
+
         else {
-            if (senha.equals(usuarios.get(userExist).getSenha())) {
-                usuarioLogado = userExist;
-                logado = true;
-                System.out.printf("usuario logado: %s",usuarios.get(usuarioLogado).getNome());
-            }
-            else{
-                System.out.printf("senha incorreta");
-            }
+            usuarios.get(usuarioLogado).setSaldo(usuarios.get(usuarioLogado).getSaldo() -valor);
+            System.out.printf("saldo atual: %.2f", usuarios.get(usuarioLogado).getSaldo());
         }
     }
 
-    public void depositar(Double valor) {
-        usuarios.get(usuarioLogado).setSaldo(usuarios.get(usuarioLogado).getSaldo() + valor);
-        System.out.printf("\nsaldo atual: %.2f", usuarios.get(usuarioLogado).getSaldo());
-    }
-
-    public void sacar(Double valor) {
-        if ((usuarios.get(usuarioLogado).getSaldo() - valor) < -600) {
-            System.out.println("\nsaque não realizado, limite de crédito ultrapassado");
-        } else {
-            usuarios.get(usuarioLogado).setSaldo(usuarios.get(usuarioLogado).getSaldo() - valor);
-            System.out.printf("\no valor atual: %.2f", usuarios.get(usuarioLogado).getSaldo());
-        }
-    }
-
-    public void registra(String cpf, String senha, String nome) {
+    public void registra(String cpf, String senha, String nome){
         usuarios.add(new Usuario(00.00, cpf, senha, nome));
-        System.out.printf("\no usuario: %s foi cadastrado com sucesso!", nome);
+        System.out.printf("usuario %s foi registrado!", nome);
+
     }
 }

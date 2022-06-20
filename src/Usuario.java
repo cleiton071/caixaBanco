@@ -1,9 +1,9 @@
 public class Usuario {
+
     private Double saldo;
     private String cpf;
     private String senha;
     private String nome;
-
 
     public Usuario(Double saldo, String cpf, String senha, String nome) {
         this.saldo = saldo;
